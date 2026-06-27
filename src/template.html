@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{site.domain}}</title>
+<meta name="description" content="Enio Borges — backend-focused software engineer. Writing on getting software right." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:          oklch(100% 0 0);
+    --surface:     oklch(100% 0 0);
+    --ink:         #060607;
+    --fg:          #18181b;
+    --muted:       #6a6a70;
+    --faint:       #9b9ba1;
+    --border:      oklch(91% 0 0);
+    --border-soft: oklch(94% 0 0);
+    --accent:      oklch(47% 0.115 254);
+    --accent-strong: oklch(42% 0.13 254);
+    --body-text:   #2e2e33;
+    --muted-text:   #3a3a40;
+
+    --display: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --body:    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+    --mono:    'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    --r: 4px;
+    --maxw: 1080px;
+    --pad: clamp(24px, 6vw, 64px);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-variant-ligatures: common-ligatures;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  a:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: var(--r);
+  }
+  a:focus:not(:focus-visible) { outline: none; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad); }
+
+  header.top {
+    padding-top: clamp(30px, 5vh, 46px);
+    padding-bottom: clamp(20px, 3vh, 30px);
+    border-bottom: 1px solid var(--border);
+  }
+  .top-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 20px 28px;
+  }
+  .brand {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .tagline {
+    margin: 7px 0 0;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--muted);
+    max-width: 42ch;
+  }
+  nav.site {
+    display: flex;
+    gap: clamp(16px, 2.4vw, 30px);
+    font-size: 14px;
+  }
+  nav.site a {
+    color: var(--muted);
+    transition: color .18s ease;
+    padding: 8px 0;
+  }
+  nav.site a:hover { color: var(--ink); }
+
+  main { display: block; }
+  .latest {
+    padding-top: clamp(58px, 11vh, 124px);
+    padding-bottom: clamp(60px, 12vh, 124px);
+    scroll-margin-top: 32px;
+  }
+  .eyebrow {
+    margin: 0 0 clamp(20px, 3.2vh, 34px);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .eyebrow .date { color: var(--accent); }
+
+  .latest-title {
+    margin: 0;
+    max-width: 19ch;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(2.55rem, 7.4vw, 5.5rem);
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  a.latest-link { display: inline-block; }
+  a.latest-link:hover .latest-title { color: var(--accent); }
+
+  .excerpt {
+    margin: clamp(24px, 3.4vh, 38px) 0 0;
+    max-width: 56ch;
+    font-size: clamp(1.06rem, 1.5vw, 1.32rem);
+    line-height: 1.5;
+    color: var(--body-text);
+  }
+  .readline {
+    margin: clamp(22px, 3vh, 32px) 0 0;
+    font-family: var(--body);
+    font-size: 13.5px;
+    color: var(--faint);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .readline .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--faint); }
+  .readline a.read { color: var(--accent); }
+  .readline a.read:hover { color: var(--accent-strong); }
+  .readline a.read .arr { transition: transform .2s ease; display: inline-block; }
+  .readline a.read:hover .arr { transform: translateX(3px); }
+
+  .label {
+    margin: 0 0 clamp(20px, 2.6vh, 30px);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .columns {
+    display: grid;
+    grid-template-columns: 1.45fr 0.85fr;
+    gap: clamp(40px, 6vw, 88px);
+    padding-top: clamp(54px, 9vh, 96px);
+    padding-bottom: clamp(54px, 9vh, 96px);
+    border-top: 1px solid var(--border);
+  }
+  .more { scroll-margin-top: 32px; }
+
+  ul.posts { list-style: none; margin: 0; padding: 0; }
+  ul.posts li { border-top: 1px solid var(--border-soft); }
+  ul.posts li:first-child { border-top: 0; }
+  ul.posts a {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+    padding: clamp(15px, 2vh, 19px) 0;
+  }
+  ul.posts .p-title {
+    font-size: 1.02rem;
+    color: var(--fg);
+    letter-spacing: -0.005em;
+    transition: color .16s ease;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
+  ul.posts a:hover .p-title { color: var(--ink); text-decoration-color: var(--border); }
+  ul.posts .p-date {
+    flex: none;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--faint);
+    white-space: nowrap;
+  }
+
+  aside.about { scroll-margin-top: 32px; }
+  aside.about .bio {
+    margin: 0 0 14px;
+    font-size: 0.96rem;
+    line-height: 1.62;
+    color: var(--muted-text);
+    max-width: 38ch;
+  }
+  aside.about .contact {
+    margin: 22px 0 0;
+    font-size: 0.95rem;
+  }
+  aside.about .contact a { color: var(--accent); }
+  aside.about .contact a:hover { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 3px; }
+
+  .socials { display: flex; gap: 12px; }
+  .socials a {
+    display: inline-flex; align-items: center;
+    color: var(--muted);
+    transition: color .16s ease;
+  }
+  .socials a:hover { color: var(--ink); }
+  .socials svg { width: 14px; height: 14px; display: block; }
+
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 34px;
+  }
+  .subscribe {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .subscribe a {
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .subscribe a:hover { color: var(--accent-strong); }
+  .subscribe a .arr { display: inline-block; transition: transform .2s ease; }
+  .subscribe a:hover .arr { transform: translateX(3px); }
+
+  .work {
+    padding-top: clamp(10px, 2vh, 20px);
+    border-top: 1px solid var(--border);
+    scroll-margin-top: 32px;
+  }
+  dl.worklist { margin: 0; }
+  .work-item {
+    display: grid;
+    grid-template-columns: minmax(190px, 250px) 1fr;
+    gap: 8px 36px;
+    padding: clamp(15px, 2vh, 20px) 0;
+    border-top: 1px solid var(--border-soft);
+  }
+  .work-item:first-child { border-top: 0; }
+  .work-item dt {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .work-item.tba dt { color: var(--faint); font-weight: 400; }
+  .work-item dd {
+    margin: 0;
+    font-size: 0.96rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  footer.foot {
+    margin-top: clamp(56px, 9vh, 100px);
+    padding: 26px 0 56px;
+    border-top: 1px solid var(--border);
+    font-family: var(--body);
+    font-size: 12.5px;
+    color: var(--faint);
+  }
+  footer.foot .foot-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  footer.foot .sync { color: var(--muted); }
+
+  @keyframes titleReveal {
+    from { opacity: 0; transform: translateY(14px); clip-path: inset(0 0 18% 0); }
+    to   { opacity: 1; transform: translateY(0);    clip-path: inset(0 0 -2% 0); }
+  }
+  .latest-title {
+    animation: titleReveal 0.92s cubic-bezier(.2,.7,.2,1) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .latest-title { animation: none; }
+    .readline a.read .arr, .subscribe a .arr { transition: none; }
+  }
+
+  @media (max-width: 720px) {
+    body { font-size: 15.5px; }
+    .top-grid { grid-template-columns: 1fr; }
+    nav.site { padding-top: 4px; }
+    .columns { grid-template-columns: 1fr; gap: clamp(40px, 9vh, 60px); }
+    aside.about .bio, aside.about { max-width: none; }
+    .work-item { grid-template-columns: 1fr; gap: 4px; }
+    .latest-title { max-width: 100%; }
+  }
+  @media (max-width: 380px) {
+    nav.site { gap: 16px; }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:          oklch(17% 0 0);
+      --surface:     oklch(21% 0 0);
+      --ink:         oklch(96% 0 0);
+      --fg:          oklch(88% 0 0);
+      --muted:       oklch(64% 0 0);
+      --faint:       oklch(48% 0 0);
+      --border:      oklch(26% 0 0);
+      --border-soft: oklch(23% 0 0);
+      --accent:      oklch(72% 0.15 254);
+      --accent-strong: oklch(78% 0.14 254);
+      --body-text:   oklch(80% 0 0);
+      --muted-text:  oklch(72% 0 0);
+    }
+    .excerpt { color: var(--body-text); }
+    aside.about .bio { color: var(--muted-text); }
+  }
+
+  @media print {
+    nav.site, .socials, .readline a.read, .subscribe { display: none; }
+    a { text-decoration: underline; }
+    .work-item { break-inside: avoid; }
+    .latest-title { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="top">
+    <div class="wrap top-grid">
+      <div class="lead">
+        <div class="brand">{{site.domain}}</div>
+        <p class="tagline">{{site.tagline}}</p>
+      </div>
+      <nav class="site" aria-label="Primary">
+        <a href="#writing">Writing</a>
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section class="latest" id="writing" aria-labelledby="latest-title">
+      <p class="eyebrow">{{latest.eyebrow}} <span aria-hidden="true">—</span> <span class="date">{{latest.date}}</span></p>
+      <a class="latest-link" href="{{latest.url}}" target="_blank" rel="noopener">
+        <h1 class="latest-title" id="latest-title">{{latest.title}}</h1>
+      </a>
+      <p class="excerpt">{{latest.excerpt}}</p>
+      <p class="readline">
+        <span>{{latest.readTime}}</span>
+        <span class="dot" aria-hidden="true"></span>
+        <a class="read" href="{{latest.url}}" target="_blank" rel="noopener">Read on Substack <span class="arr" aria-hidden="true">→</span></a>
+      </p>
+    </section>
+
+    <div class="columns">
+      <section class="more" id="writing-list" aria-labelledby="more-label">
+        <h2 class="label" id="more-label">More writing</h2>
+        <ul class="posts">
+          {{#each morePosts}}
+          <li><a href="{{url}}" target="_blank" rel="noopener"><span class="p-title">{{title}}</span><span class="p-date">{{date}}</span></a></li>
+          {{/each}}
+        </ul>
+      </section>
+
+      <aside class="about" id="about" aria-labelledby="about-label">
+        <h2 class="label" id="about-label">About</h2>
+        <p class="bio">{{about.bio1}}</p>
+        <p class="bio">{{about.bio2}}</p>
+        <p class="contact"><a href="{{about.emailHref}}">{{about.email}}</a></p>
+        <div class="contact-row">
+          <div class="socials">
+            <a href="{{about.github}}" target="_blank" rel="noopener" aria-label="GitHub">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            </a>
+            <a href="{{about.linkedin}}" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3.4 4.2A1.6 1.6 0 103.39 1a1.6 1.6 0 00.01 3.2zM2.05 5.4h2.7V15h-2.7V5.4zM6.6 5.4h2.59v1.31h.04c.36-.68 1.24-1.4 2.56-1.4 2.74 0 3.25 1.8 3.25 4.15V15h-2.7v-4.25c0-1.01-.02-2.32-1.41-2.32-1.42 0-1.63 1.1-1.63 2.24V15H6.6V5.4z"/></svg>
+            </a>
+            <a href="{{about.substack}}" target="_blank" rel="noopener" aria-label="Substack">
+              <svg viewBox="0 0 21 24" fill="currentColor" aria-hidden="true"><path d="M20.9991 5.40625H0V8.24275H20.9991V5.40625Z"/><path d="M0 10.8125V24.0004L10.4991 18.1107L21 24.0004V10.8125H0Z"/><path d="M20.9991 0H0V2.83603H20.9991V0Z"/></svg>
+            </a>
+          </div>
+          <p class="subscribe"><a href="{{about.subscribeUrl}}" target="_blank" rel="noopener">{{about.subscribeLabel}} <span class="arr" aria-hidden="true">→</span></a></p>
+        </div>
+      </aside>
+    </div>
+
+    <section class="work" id="work" aria-labelledby="work-label">
+      <h2 class="label" id="work-label">Selected work</h2>
+      <dl class="worklist">
+        {{#each work}}
+        <div class="work-item {{cssClass}}">
+          <dt>{{name}}</dt>
+          <dd>{{line}}</dd>
+        </div>
+        {{/each}}
+      </dl>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot-row">
+      <span>{{site.copyright}}</span>
+      <span class="sync">{{site.footerNote}}</span>
+    </div>
+  </footer>
+
+</body>
+</html>

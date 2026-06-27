@@ -1,0 +1,17 @@
+{
+  "name": "lean-rss-feed-website",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/borgesenioc/lean-rss-feed-website.git"
+  },
+  "description": "A writing-first personal website powered by any RSS feed.",
+  "scripts": {
+    "build": "node scripts/build.js"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.8"
+  }
+}
