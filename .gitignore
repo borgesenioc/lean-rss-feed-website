@@ -7,3 +7,5 @@ data/work.json
 .env
 .env.*
 *.log
+.vercel
+.env*

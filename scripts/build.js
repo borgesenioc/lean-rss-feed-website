@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync, copyFileSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import Handlebars from 'handlebars';
@@ -107,11 +107,15 @@ async function fetchAndSaveWriting(rssUrl, outPath) {
   }
 }
 
+const FAVICON_SRC = join(ROOT, 'src', 'favicon.ico');
+const FAVICON_DST = join(OUTPUT_DIR, 'favicon.ico');
+
 function build(data) {
+  mkdirSync(OUTPUT_DIR, { recursive: true });
+  if (existsSync(FAVICON_SRC)) copyFileSync(FAVICON_SRC, FAVICON_DST);
   const source = readFileSync(TEMPLATE_FILE, 'utf-8');
   const template = Handlebars.compile(source);
   const html = template(data);
-  mkdirSync(OUTPUT_DIR, { recursive: true });
   writeFileSync(OUTPUT_FILE, html, 'utf-8');
   console.log(`Built ${OUTPUT_FILE}`);
 }
