@@ -1,0 +1,22 @@
+{
+  "rss": {
+    "url": "https://borgesenio.substack.com/feed"
+  },
+  "site": {
+    "domain": "enioborges.com",
+    "tagline": "Writing software is easy. Getting it right is hard.",
+    "copyright": "\u00a9 2026 Enio Borges",
+    "footerNote": "Writing syncs and selected projects"
+  },
+  "about": {
+    "bio1": "I build backend systems that can't afford to fail. Full-stack when it counts.",
+    "bio2": "Seven years from business and operations into engineering. Currently on a Go/GraphQL and MySQL stack, with Node.js and TypeScript across the rest. MS in Computer Science at the University of Colorado Boulder.",
+    "email": "enio@enioborges.com",
+    "emailHref": "mailto:enio@enioborges.com",
+    "github": "https://github.com/borgesenioc",
+    "linkedin": "https://linkedin.com/in/enioborges",
+    "substack": "https://substack.com/@borgesenio",
+    "subscribeLabel": "Subscribe",
+    "subscribeUrl": "https://substack.com/@borgesenio"
+  }
+}
