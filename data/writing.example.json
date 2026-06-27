@@ -1,0 +1,16 @@
+{
+  "latest": {
+    "eyebrow": "Latest",
+    "date": "Jan 2026",
+    "title": "Your latest post title",
+    "excerpt": "A short description of your latest post.",
+    "readTime": "5 min read",
+    "url": "https://your.substack.com/p/your-post"
+  },
+  "morePosts": [
+    { "title": "Your post title here", "date": "Jan 2026", "url": "https://your.substack.com/p/your-post" },
+    { "title": "Another post title", "date": "Dec 2025", "url": "https://your.substack.com/p/another-post" },
+    { "title": "A third example post", "date": "Nov 2025", "url": "https://your.substack.com/p/third-post" },
+    { "title": "Fourth post placeholder", "date": "Oct 2025", "url": "https://your.substack.com/p/fourth-post" }
+  ]
+}

@@ -7,10 +7,28 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
 const TEMPLATE_FILE = join(ROOT, 'src', 'template.html');
-const DATA_FILE = join(ROOT, 'data', 'content.json');
-const EXAMPLE_FILE = join(ROOT, 'data', 'content.example.json');
 const OUTPUT_DIR = join(ROOT, 'dist');
 const OUTPUT_FILE = join(OUTPUT_DIR, 'index.html');
+
+const files = {
+  content: { src: join(ROOT, 'data', 'content.json'), example: join(ROOT, 'data', 'content.example.json') },
+  writing: { src: join(ROOT, 'data', 'writing.json'), example: join(ROOT, 'data', 'writing.example.json') },
+  work:    { src: join(ROOT, 'data', 'work.json'),    example: join(ROOT, 'data', 'work.example.json') },
+};
+
+function readJSON(path, examplePath) {
+  try {
+    return JSON.parse(readFileSync(path, 'utf-8'));
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      console.warn(`${path} not found, copying from ${examplePath}`);
+      copyFileSync(examplePath, path);
+      return JSON.parse(readFileSync(path, 'utf-8'));
+    }
+    console.error(`Failed to parse ${path}: ${err.message}`);
+    process.exit(1);
+  }
+}
 
 function parseDate(dateStr) {
   if (!dateStr) return null;
@@ -51,7 +69,7 @@ function parseRSS(xml) {
   return items;
 }
 
-async function fetchPosts(rssUrl) {
+async function fetchAndSaveWriting(rssUrl, outPath) {
   try {
     const res = await fetch(rssUrl, {
       headers: { 'User-Agent': 'lean-rss-feed-website/1.0' },
@@ -59,10 +77,32 @@ async function fetchPosts(rssUrl) {
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const xml = await res.text();
-    const items = parseRSS(xml);
-    return items.filter(i => i.title && i.url);
+    const items = parseRSS(xml).filter(i => i.title && i.url);
+
+    if (items.length === 0) throw new Error('no items in feed');
+
+    const [first, ...rest] = items;
+    const writing = {
+      latest: {
+        eyebrow: 'Latest',
+        date: first.date,
+        title: first.title,
+        excerpt: first.excerpt || 'Read the full post.',
+        readTime: '',
+        url: first.url,
+      },
+      morePosts: rest.slice(0, 4).map(p => ({
+        title: p.title,
+        date: p.date,
+        url: p.url,
+      })),
+    };
+
+    writeFileSync(outPath, JSON.stringify(writing, null, 2) + '\n', 'utf-8');
+    console.log(`Wrote ${outPath} from RSS`);
+    return writing;
   } catch (err) {
-    console.warn(`RSS fetch failed (${err.message}), using fallback data`);
+    console.warn(`RSS fetch failed (${err.message})`);
     return null;
   }
 }
@@ -77,52 +117,12 @@ function build(data) {
 }
 
 async function main() {
-  let staticData;
-  try {
-    staticData = JSON.parse(readFileSync(DATA_FILE, 'utf-8'));
-  } catch (err) {
-    if (err.code === 'ENOENT') {
-      console.warn('data/content.json not found, copying from content.example.json');
-      copyFileSync(EXAMPLE_FILE, DATA_FILE);
-      staticData = JSON.parse(readFileSync(DATA_FILE, 'utf-8'));
-    } else {
-      console.error(`Failed to parse data/content.json: ${err.message}`);
-      process.exit(1);
-    }
-  }
-  const { rss } = staticData;
-  const posts = await fetchPosts(rss.url);
+  const content = readJSON(files.content.src, files.content.example);
+  const work = readJSON(files.work.src, files.work.example);
+  const writing = await fetchAndSaveWriting(content.rss.url, files.writing.src)
+    || readJSON(files.writing.src, files.writing.example);
 
-  let latest, morePosts;
-
-  if (posts && posts.length > 0) {
-    const [first, ...rest] = posts;
-    latest = {
-      eyebrow: 'Latest',
-      date: first.date,
-      title: first.title,
-      excerpt: first.excerpt || 'Read the full post.',
-      readTime: '',
-      url: first.url,
-    };
-    morePosts = rest.slice(0, 4).map(p => ({
-      title: p.title,
-      date: p.date,
-      url: p.url,
-    }));
-  } else {
-    latest = {
-      eyebrow: 'Latest',
-      date: rss.fallbackLatest.date,
-      title: rss.fallbackLatest.title,
-      excerpt: rss.fallbackLatest.excerpt,
-      readTime: rss.fallbackLatest.readTime || '',
-      url: rss.fallbackLatest.url,
-    };
-    morePosts = rss.fallbackPosts;
-  }
-
-  const data = { ...staticData, latest, morePosts };
+  const data = { ...content, work, ...writing };
   build(data);
 }
 

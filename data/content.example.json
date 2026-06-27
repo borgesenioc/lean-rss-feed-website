@@ -1,19 +1,6 @@
 {
   "rss": {
-    "url": "https://your.substack.com/feed",
-    "fallbackPosts": [
-      { "title": "Your post title here", "date": "Jan 2026", "url": "https://your.substack.com" },
-      { "title": "Another post title", "date": "Dec 2025", "url": "https://your.substack.com" },
-      { "title": "A third example post", "date": "Nov 2025", "url": "https://your.substack.com" },
-      { "title": "Fourth post placeholder", "date": "Oct 2025", "url": "https://your.substack.com" }
-    ],
-    "fallbackLatest": {
-      "title": "Your latest post title",
-      "excerpt": "A short description of your latest post.",
-      "date": "Jan 2026",
-      "url": "https://your.substack.com",
-      "readTime": "5 min read"
-    }
+    "url": "https://your.substack.com/feed"
   },
   "site": {
     "domain": "yourdomain.com",
@@ -30,14 +17,6 @@
     "linkedin": "https://linkedin.com/in/yourusername",
     "substack": "https://your.substack.com",
     "subscribeLabel": "Subscribe",
-    "subscribeUrl": "https://your.substack.com",
-    "subscribeIntro": ""
-  },
-  "work": [
-    {
-      "name": "Project or role name",
-      "line": "Brief description of the project or role.",
-      "cssClass": ""
-    }
-  ]
+    "subscribeUrl": "https://your.substack.com"
+  }
 }
